@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+
+LOG_FOLDER=/var/log/{{ runit_service_name }}
+
+mkdir -p "$LOG_FOLDER"
+exec svlogd -tt "$LOG_FOLDER"
