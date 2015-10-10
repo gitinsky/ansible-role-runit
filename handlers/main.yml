@@ -1,3 +1,3 @@
 ---
 - name: runit restart
-  shell: sudo -u {{ runit_service.user }} killall {{ runit_service.kill_name }}
+  shell: sudo -u {{ runit_service_user }} killall {{ runit_service_kill }}
