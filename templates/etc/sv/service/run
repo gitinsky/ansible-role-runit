@@ -3,4 +3,4 @@ exec 2>&1
 
 ulimit -n 65535
 
-sudo -u {{ runit_service_user }} "{{ runit_service_command }}" {{ runit_service_params }}
+exec sudo -u {{ runit_service_user }} "{{ runit_service_command }}" {{ runit_service_params }}
