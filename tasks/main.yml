@@ -21,3 +21,16 @@
 - name: enable runit services
   file: src=../sv/{{ runit_service_name }} dest=/etc/service/{{ runit_service_name }} state=link
   notify: runit restart
+
+- name: wait for runit to handle service
+  wait_for: path=/etc/sv/{{ runit_service_name }}/supervise/status
+  when: runit_allow_user_control
+
+- name: allow {{ runit_service_user }} to controll the {{ runit_service_name }} service
+  file: dest=/etc/sv/{{ runit_service_name }}/{{ item.d }} mode={{ item.m }} owner={{ item.o }}
+  with_items:
+      - { d: supervise,         m: 755, o: root }
+      - { d: supervise/ok,      m: 600, o: "{{ runit_service_user }}"}
+      - { d: supervise/control, m: 600, o: "{{ runit_service_user }}"}
+      - { d: supervise/status,  m: 644, o: "{{ runit_service_user }}"}
+  when: runit_allow_user_control

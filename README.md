@@ -9,6 +9,7 @@ runit_service_user | user the service will be running with
 runit_service_command | command to start service
 runit_service_params | params passed to command
 runit_service_kill | process name to kill to resytart the service
+runit_allow_user_control | optional, allow service to be controlled by runit_service_user, false by default
 
 ## Example:
 
