@@ -16,11 +16,10 @@
   with_items:
     - log/run
     - run
-  notify: runit restart
+  notify: runit restart {{ runit_service_name }}
 
 - name: enable runit services
   file: src=../sv/{{ runit_service_name }} dest=/etc/service/{{ runit_service_name }} state=link
-  notify: runit restart
 
 - name: wait for runit to handle service
   wait_for: path=/etc/sv/{{ runit_service_name }}/supervise/status
