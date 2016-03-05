@@ -1,1 +1,1 @@
-runit_allow_user_control: no
+runit_allow_user_control: yes
