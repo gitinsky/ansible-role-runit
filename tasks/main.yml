@@ -7,6 +7,7 @@
 
 - name: create users
   user: name={{ runit_service_user }} comment="runit {{ runit_service_name }}"
+  when: runit_service_user != 'root'
 
 - name: create runit services dirs
   file: path=/etc/sv/{{ runit_service_name }}/log state=directory
