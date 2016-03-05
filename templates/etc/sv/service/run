@@ -3,4 +3,8 @@ exec 2>&1
 
 ulimit -n 65535
 
+{% if runit_service_user == 'root' %}
+exec {{ runit_service_command }} {{ runit_service_params }}
+{% else %}
 exec sudo -u {{ runit_service_user }} "{{ runit_service_command }}" {{ runit_service_params }}
+{% endif %}

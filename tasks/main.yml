@@ -16,7 +16,6 @@
   with_items:
     - log/run
     - run
-  notify: runit restart {{ runit_service_name }}
 
 - name: enable runit services
   file: src=../sv/{{ runit_service_name }} dest=/etc/service/{{ runit_service_name }} state=link
