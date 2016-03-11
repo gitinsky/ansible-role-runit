@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+{% if runit_log_size      is defined %}s{{ runit_log_size      }}{{'\n'}}{% endif %}
+{% if runit_log_num       is defined %}n{{ runit_log_num       }}{{'\n'}}{% endif %}
+{% if runit_log_min       is defined %}N{{ runit_log_min       }}{{'\n'}}{% endif %}
+{% if runit_log_timeout   is defined %}t{{ runit_log_timeout   }}{{'\n'}}{% endif %}
+{% if runit_log_processor is defined %}!{{ runit_log_processor }}{{'\n'}}{% endif %}
+{% if runit_log_prefix    is defined %}p{{ runit_log_prefix    }}{{'\n'}}{% endif %}
+{% if runit_log_transmit_address    is defined %}
+{% if runit_log_transmit_only is defined and runit_log_transmit_only %}
+U
+{%- else %}
+u
+{%- endif %}
+{{ runit_log_transmit_address    }}
+{%- if runit_log_transmit_port is defined %}:{{ runit_log_transmit_port }}{% endif %}
+{% endif %}

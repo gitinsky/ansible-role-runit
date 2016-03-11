@@ -1,1 +1,30 @@
 runit_allow_user_control: yes
+runit_service_params: ""
+
+# sets the maximum file size of current when svlogd should rotate the current log file to size bytes. Default is 1000000. If size is zero, svlogd doesn’t rotate log files. You should set size to at least (2 * len).
+# runit_log_size: 1000000
+
+# sets the number of old log files svlogd should maintain to num. If svlogd sees more that num old log files in log after log file rotation, it deletes the oldest one. Default is 10. If num is zero, svlogd doesn’t remove old log files.
+# runit_log_num: 10
+
+# sets the minimum number of old log files svlogd should maintain to min. min must be less than num. If min is set, and svlogd cannot write to current because the filesystem is full, and it sees more than min old log files, it deletes the oldest one.
+# runit_log_min:
+
+# sets the maximum age of the current log file when svlogd should rotate the current log file to timeout seconds. If current is timeout seconds old, and is not empty, svlogd forces log file rotation.
+# runit_log_timeout:
+
+# tells svlogd to feed each recent log file through processor (see above) on log file rotation. By default log files are not processed.
+# runit_log_processor: 
+
+# tells svlogd to transmit the first len characters of selected log messages to the IP address a.b.c.d, port number port. If port isn’t set, the default port for syslog is used (514). len can be set through the -l option, see below. If svlogd has trouble sending udp packets, it writes error messages to the log directory. Attention: logging through udp is unreliable, and should be used in private networks only.
+# ua.b.c.d[:port]
+# is the same as the u line above, but the log messages are no longer written to the log directory, but transmitted through udp only. Error messages from svlogd concerning sending udp packages still go to the log directory.
+# Ua.b.c.d[:port]
+#
+# runit_log_transmit_address:
+# runit_log_transmit_port:
+# runit_log_transmit_only: no
+
+
+# tells svlogd to prefix each line to be written to the log directory, to standard error, or through UDP, with prefix.
+# runit_log_prefix:

@@ -4,3 +4,9 @@
 
 - name: runit hup {{ runit_service_name }}
   shell: sv hup {{ runit_service_name }}
+
+- name: runit restart {{ runit_service_name }}/log
+  shell: sv restart {{ runit_service_name }}/log
+
+- name: runit hup {{ runit_service_name }}/log
+  shell: sv hup {{ runit_service_name }}/log
