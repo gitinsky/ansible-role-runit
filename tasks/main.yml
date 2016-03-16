@@ -24,18 +24,18 @@
     - log/run
   notify: runit restart {{ runit_service_name }}/log
 
-- name: put runit services log config files
-  template: src=log/{{ item }} dest=/var/log/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
-  with_items:
-    - config
-  notify: runit hup {{ runit_service_name }}/log
-
 - name: enable runit services
   file: src=../sv/{{ runit_service_name }} dest=/etc/service/{{ runit_service_name }} state=link
 
 - name: wait for runit to handle service
   wait_for: path=/etc/sv/{{ runit_service_name }}/supervise/status
   when: runit_allow_user_control
+
+- name: put runit services log config files
+  template: src=log/{{ item }} dest=/var/log/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
+  with_items:
+    - config
+  notify: runit hup {{ runit_service_name }}/log
 
 - name: allow {{ runit_service_user }} to controll the {{ runit_service_name }} service
   file: dest=/etc/sv/{{ runit_service_name }}/{{ item.d }} mode={{ item.m }} owner={{ item.o }}
