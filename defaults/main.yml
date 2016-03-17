@@ -27,6 +27,8 @@ runit_service_env: ""
 # runit_log_transmit_port:
 # runit_log_transmit_only: no
 
-
 # tells svlogd to prefix each line to be written to the log directory, to standard error, or through UDP, with prefix.
 # runit_log_prefix:
+
+# buffer size. Set the size of the buffer svlogd uses when reading from standard input and writing to logs to buflen. Default is 1024. buflen must be greater than len. For svlogd instances that process a lot of data in short time, the buffer size should be increased to improve performance.
+runit_log_buflen: 1024

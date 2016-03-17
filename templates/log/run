@@ -3,4 +3,4 @@
 LOG_FOLDER=/var/log/{{ runit_service_name }}
 
 mkdir -p "$LOG_FOLDER"
-exec svlogd -tt "$LOG_FOLDER"
+exec svlogd -tt -b {{ runit_log_buflen}} "$LOG_FOLDER"
