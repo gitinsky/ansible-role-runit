@@ -31,4 +31,8 @@ runit_service_env: ""
 # runit_log_prefix:
 
 # buffer size. Set the size of the buffer svlogd uses when reading from standard input and writing to logs to buflen. Default is 1024. buflen must be greater than len. For svlogd instances that process a lot of data in short time, the buffer size should be increased to improve performance.
+# must be grater than 2
 runit_log_buflen: 1024
+
+# line length. Pattern matching applies to the first len characters of a log message only. Default is 1000.
+runit_log_linelen: 1000
