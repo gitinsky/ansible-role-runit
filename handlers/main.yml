@@ -10,3 +10,9 @@
 
 - name: runit hup {{ runit_service_name }}/log
   shell: sv hup {{ runit_service_name }}/log
+
+- name: restart {{ runit_service_name }}
+  shell: sv restart {{ runit_service_name }}
+
+- name: reload {{ runit_service_name }}
+  shell: sv hup {{ runit_service_name }}
