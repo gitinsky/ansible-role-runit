@@ -1,6 +1,6 @@
 runit_allow_user_control: yes
 runit_service_params: ""
-runit_service_env: ""
+runit_service_env: {}
 # dictionary
 
 # sets the maximum file size of current when svlogd should rotate the current log file to size bytes. Default is 1000000. If size is zero, svlogd doesn’t rotate log files. You should set size to at least (2 * len).
