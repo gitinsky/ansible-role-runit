@@ -1,4 +1,9 @@
 ---
+
+- name: purge upstart in ubuntu if it uses systemd
+  apt: name=upstart state=absent purge=yes
+  when: ansible_service_mgr == "systemd" and ansible_distribution == "Ubuntu"
+
 - name: install required system packages
   apt: name={{ item }} state=latest
   with_items:
