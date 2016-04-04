@@ -3,4 +3,4 @@
 LOG_FOLDER=/var/log/{{ runit_service_name }}
 
 mkdir -p "$LOG_FOLDER"
-exec svlogd -tt -b {{ runit_log_buflen }} -l {{ runit_log_linelen if runit_log_linelen < runit_log_buflen else runit_log_buflen - 1 }} "$LOG_FOLDER"
+exec svlogd {% for t in range(runit_log_timestamp_level) %}{%if loop.first%}-{%endif%}t{% endfor %} -b {{ runit_log_buflen }} -l {{ runit_log_linelen if runit_log_linelen < runit_log_buflen else runit_log_buflen - 1 }} "$LOG_FOLDER"
