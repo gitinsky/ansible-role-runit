@@ -10,5 +10,5 @@ export {% for k,v in runit_service_env.iteritems() %}{{ k }}="{{ v }}" {% endfor
 {% if runit_service_user == 'root' %}
 exec {{ runit_service_command }} {{ runit_service_params }}
 {% else %}
-exec sudo {{ '-E' if runit_service_env|length > 0 else '' }} -u {{ runit_service_user }} "{{ runit_service_command }}" {{ runit_service_params }}
+exec chpst -u {{ runit_service_user }} "{{ runit_service_command }}" {{ runit_service_params }}
 {% endif %}
