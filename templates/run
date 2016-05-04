@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 exec 2>&1
 
-ulimit -n 65535
+ulimit -n {{ runit_service_file_limit }}
 
 {% if runit_service_env|length > 0 %}
 export {% for k,v in runit_service_env.iteritems() %}{{ k }}="{{ v }}" {% endfor %}

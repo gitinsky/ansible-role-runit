@@ -1,6 +1,7 @@
 runit_allow_user_control: yes
 runit_service_params: ""
 runit_service_env: {}
+runit_service_file_limit: 65535
 runit_log_timestamp_level: 2
 # 0-3
 
