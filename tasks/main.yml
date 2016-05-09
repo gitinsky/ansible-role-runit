@@ -11,7 +11,7 @@
       - sudo
 
 - name: create users
-  user: name={{ runit_service_user }} comment="runit {{ runit_service_name }}"
+  user: name={{ runit_service_user }} comment="runit service user"
   when: runit_service_user != 'root'
 
 - name: create runit services dirs
