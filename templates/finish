@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cat <<EOF> {{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom.$$
+node_service_state_last_run_exit_code{service="{{ runit_service_name }}",supervisor="runit"} $1
+node_service_state_last_exit_code{service="{{ runit_service_name }}",supervisor="runit"} $2
+EOF
+
+mv {{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom.$$ {{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom

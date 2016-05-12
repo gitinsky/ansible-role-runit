@@ -23,6 +23,9 @@
     - run
   notify: runit restart {{ runit_service_name }}
 
+- include: prometheus.yml
+  when: runit_prometheus_stats
+
 - name: put runit services log files
   template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
   with_items:

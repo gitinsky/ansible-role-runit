@@ -1,0 +1,29 @@
+- name: create node_exporter_user
+  user: name={{ node_exporter_user }} comment="runit service user"
+  when: node_exporter_user != 'root'
+
+- name: create node_exporter data dir
+  file: dest={{ node_exporter_data_dir }} state=directory owner={{ node_exporter_user }} group={{ node_exporter_user }} mode=1777
+
+- name: check if metrics are presented in prom file
+  shell: grep '^{{ item }}\s' "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom"
+  with_items:
+      - 'node_service_state_last_run_exit_code{service="{{ runit_service_name }}",supervisor="runit"}'
+      - 'node_service_state_last_exit_code{service="{{ runit_service_name }}",supervisor="runit"}'
+  failed_when: no
+  changed_when: metric_check.rc != 0
+  register: metric_check
+  
+- name: init prometheus metrics
+  lineinfile:
+      regexp: '^{{ item.item }}\s'
+      line: '{{ item.item }} 0'
+      dest: "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom"
+      create: yes
+  with_items: "{{ metric_check.results }}"
+  when: item|changed
+
+- name: put runit finish file
+  template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
+  with_items:
+    - finish
