@@ -4,6 +4,8 @@ To be used with other roles to provide runit services to them
 
 ## The following variables must be set up to create the service:
 
+Varibale | Description
+--- | --- 
 runit_service_name | name of the service
 runit_service_user | user the service will be running with
 runit_service_command | command to start service
@@ -13,6 +15,7 @@ runit_service_env | optional, dictionary of environment variables
 runit_prometheus_stats | when enabled, runit will put ```node_service_state_last_run_exit_code``` and ```node_service_state_last_exit_code``` metrics to ```node_exporter_data_dir``` directory. Check out [prometheus](https://github.com/gitinsky/ansible-role-prometheus) role
 node_exporter_data_dir| Check out [prometheus](https://github.com/gitinsky/ansible-role-prometheus) role
 node_exporter_user| Check out [prometheus](https://github.com/gitinsky/ansible-role-prometheus) role
+runit_pre_start_command| Command run before service is started
 
 ## Example:
 

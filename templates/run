@@ -7,6 +7,7 @@ ulimit -n {{ runit_service_file_limit }}
 export {% for k,v in runit_service_env.iteritems() %}{{ k }}="{{ v }}" {% endfor %}
 {% endif %}
 
+{{ runit_pre_start_command }}
 {% if runit_service_user == 'root' %}
 exec {{ runit_service_command }} {{ runit_service_params }}
 {% else %}
