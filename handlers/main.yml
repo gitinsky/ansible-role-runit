@@ -1,12 +1,15 @@
 ---
 - name: runit restart {{ runit_service_name }}
   shell: sv restart {{ runit_service_name }}
+  become_user: "{{ runit_service_user }}"
 
 - name: runit hup {{ runit_service_name }}
   shell: sv hup {{ runit_service_name }}
+  become_user: "{{ runit_service_user }}"
 
 - name: runit reload {{ runit_service_name }}
   shell: sv reload {{ runit_service_name }}
+  become_user: "{{ runit_service_user }}"
 
 - name: runit restart {{ runit_service_name }}/log
   shell: sv restart {{ runit_service_name }}/log
