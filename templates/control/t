@@ -1,0 +1,3 @@
+#!/bin/bash
+rm exit_type_flag
+exit 1

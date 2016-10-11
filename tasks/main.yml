@@ -45,6 +45,14 @@
     - config
   notify: runit hup {{ runit_service_name }}/log
 
+- name: create control directory
+  file: dest=/etc/sv/{{ runit_service_name }}/control state=directory mode=755
+
+- name: put runit control/t file
+  template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
+  with_items:
+    - control/t
+
 - name: allow {{ runit_service_user }} to controll the {{ runit_service_name }} service
   file: dest=/etc/sv/{{ runit_service_name }}/{{ item.d }} mode={{ item.m }} owner={{ item.o }}
   with_items:

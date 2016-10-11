@@ -13,6 +13,14 @@
   failed_when: no
   changed_when: metric_check.rc != 0
   register: metric_check
+
+- name: check if last crash metrics are presented in prom file
+  shell: grep '^{{ item }}\s' "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_crash.prom"
+  with_items:
+      - 'node_service_state_last_crash{service="{{ runit_service_name }}",supervisor="runit"}'
+  failed_when: no
+  changed_when: crash_metric_check.rc != 0
+  register: crash_metric_check
   
 - name: init prometheus metrics
   lineinfile:
@@ -22,6 +30,16 @@
       create: yes
   with_items: "{{ metric_check.results }}"
   when: item|changed
+
+- name: init prometheus crash metrics
+  lineinfile:
+      regexp: '^{{ item.item }}\s'
+      line: '{{ item.item }} 0'
+      dest: "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_crash.prom"
+      create: yes
+  with_items: "{{ crash_metric_check.results }}"
+  when: item|changed
+
 
 - name: put runit finish file
   template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755

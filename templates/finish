@@ -1,8 +1,16 @@
 #!/bin/bash
-
 cat <<EOF> {{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom.$$
 node_service_state_last_run_exit_code{service="{{ runit_service_name }}",supervisor="runit"} $1
 node_service_state_last_exit_code{service="{{ runit_service_name }}",supervisor="runit"} $2
 EOF
+
+if test -f exit_type_flag
+then
+    echo "node_service_state_last_crash{service=\"{{ runit_service_name }}\",supervisor=\"runit\"} $(date +%s)" > {{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_crash.prom.$$
+    mv {{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_crash.prom.$$ {{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_crash.prom
+{% if runit_restart_delay_seconds != 0 %}
+    sleep {{ runit_restart_delay_seconds }}
+{% endif %}
+fi
 
 mv {{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom.$$ {{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom

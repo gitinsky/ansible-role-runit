@@ -6,6 +6,7 @@ runit_prometheus_stats: yes
 node_exporter_data_dir: /var/lib/node_exporter
 node_exporter_user: prometheus
 runit_pre_start_command: ""
+runit_restart_delay_seconds: 0
 runit_log_timestamp_level: 2
 # 0-3
 

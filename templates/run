@@ -1,5 +1,6 @@
 #!/bin/bash -eu
 exec 2>&1
+touch exit_type_flag
 
 ulimit -n {{ runit_service_file_limit }}
 
