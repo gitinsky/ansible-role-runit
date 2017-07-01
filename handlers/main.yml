@@ -1,4 +1,7 @@
 ---
+- name: init q
+  shell: init q
+
 - name: runit restart {{ runit_service_name }}
   shell: sv restart {{ runit_service_name }}
   become_user: "{{ runit_service_user }}"
