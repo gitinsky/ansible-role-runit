@@ -1,0 +1,21 @@
+- name: create /package
+  file: state=directory dest=/package
+
+- name: download runit-2.1.2.tar.gz
+  get_url: url=http://smarden.org/runit/runit-2.1.2.tar.gz dest=/package/runit-2.1.2.tar.gz
+
+- name: unarchive runit-2.1.2.tar.gz
+  unarchive: remote_src=True src=/package/runit-2.1.2.tar.gz dest=/package
+
+- name: compile runit
+  shell: cd /package/admin/runit-2.1.2/ && package/install creates=/package/admin/runit-2.1.2/command/runit
+
+- name: install stage 2
+  shell: install -m0750 /package/admin/runit/etc/2 /sbin/runsvdir-start creates=/sbin/runsvdir-start
+
+- name: create /service
+  file: state=directory dest=/service
+
+- name: add a line to /etc/inittab
+  lineinfile: path=/etc/inittab regexp="^SV:123456:respawn:/sbin/runsvdir-start" line="SV:123456:respawn:/sbin/runsvdir-start"
+  notify: init q

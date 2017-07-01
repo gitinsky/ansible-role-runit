@@ -9,6 +9,10 @@
   with_items:
       - runit
       - sudo
+  when: ansible_os_family == "Debian"
+
+- include: Elbrus.yml
+  when: ansible_os_family == "Elbrus"
 
 - name: create users
   user: name={{ runit_service_user }} comment="runit service user"
@@ -16,12 +20,14 @@
 
 - name: create runit services dirs
   file: path=/etc/sv/{{ runit_service_name }}/log state=directory
+  when: ansible_os_family  == "Debian"
 
 - name: put runit services files
   template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
   with_items:
     - run
   notify: runit restart {{ runit_service_name }}
+  when: ansible_os_family  == "Debian"
 
 - include: prometheus.yml
   when: runit_prometheus_stats
@@ -31,27 +37,33 @@
   with_items:
     - log/run
   notify: runit restart {{ runit_service_name }}/log
+  when: ansible_os_family  == "Debian"
 
 - name: enable runit services
   file: src=../sv/{{ runit_service_name }} dest=/etc/service/{{ runit_service_name }} state=link
+  when: ansible_os_family  == "Debian"
 
 - name: wait for runit to handle service
   wait_for: path=/etc/sv/{{ runit_service_name }}/supervise/status
   when: runit_allow_user_control
+  when: ansible_os_family  == "Debian"
 
 - name: put runit services log config files
   template: src=log/{{ item }} dest=/var/log/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
   with_items:
     - config
   notify: runit hup {{ runit_service_name }}/log
+  when: ansible_os_family  == "Debian"
 
 - name: create control directory
   file: dest=/etc/sv/{{ runit_service_name }}/control state=directory mode=755
+  when: ansible_os_family  == "Debian"
 
 - name: put runit control/t file
   template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
   with_items:
     - control/t
+  when: ansible_os_family  == "Debian"
 
 - name: allow {{ runit_service_user }} to controll the {{ runit_service_name }} service
   file: dest=/etc/sv/{{ runit_service_name }}/{{ item.d }} mode={{ item.m }} owner={{ item.o }}
@@ -60,4 +72,4 @@
       - { d: supervise/ok,      m: 600, o: "{{ runit_service_user }}"}
       - { d: supervise/control, m: 600, o: "{{ runit_service_user }}"}
       - { d: supervise/status,  m: 644, o: "{{ runit_service_user }}"}
-  when: runit_allow_user_control
+  when: runit_allow_user_control and ansible_os_family  == "Debian"
