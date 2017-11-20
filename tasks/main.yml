@@ -11,7 +11,7 @@
       - sudo
   when: ansible_os_family == "Debian"
 
-- include: Elbrus.yml
+- include_tasks: Elbrus.yml
   when: ansible_os_family == "Elbrus"
 
 - name: create users
@@ -40,7 +40,7 @@
     - run
   when: ansible_os_family == "Elbrus"
 
-- include: prometheus.yml
+- include_tasks: prometheus.yml
   when: runit_prometheus_stats
 
 - name: put runit services log files
