@@ -125,5 +125,6 @@
       - { d: supervise/ok,      m: 600, o: "{{ runit_service_user }}"}
       - { d: supervise/control, m: 600, o: "{{ runit_service_user }}"}
       - { d: supervise/status,  m: 644, o: "{{ runit_service_user }}"}
-  when: runit_allow_user_control
-  when: ansible_os_family  == "Debian"
+  when:
+    - runit_allow_user_control
+    - ansible_os_family  == "Debian"
