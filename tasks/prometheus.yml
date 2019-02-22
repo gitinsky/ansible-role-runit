@@ -15,7 +15,7 @@
   register: metric_check
 
 - name: check if last crash metrics are presented in prom file
-  shell: grep '^{{ item }}\s' "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_crash.prom"
+  command: grep '^{{ item }}\s' "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_crash.prom"
   with_items:
       - 'node_service_state_last_crash{service="{{ runit_service_name }}",supervisor="runit"}'
   failed_when: no
