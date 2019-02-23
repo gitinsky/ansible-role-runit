@@ -6,7 +6,7 @@
   file: dest={{ node_exporter_data_dir }} state=directory owner={{ node_exporter_user }} group={{ node_exporter_user }} mode=1777
 
 - name: check if metrics are presented in prom file
-  shell: grep '^{{ item }}\s' "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom"
+  command: grep '^{{ item }}\s' "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom"
   with_items:
       - 'node_service_state_last_run_exit_code{service="{{ runit_service_name }}",supervisor="runit"}'
       - 'node_service_state_last_exit_code{service="{{ runit_service_name }}",supervisor="runit"}'
@@ -21,7 +21,7 @@
   failed_when: no
   changed_when: crash_metric_check.rc != 0
   register: crash_metric_check
-  
+
 - name: init prometheus metrics
   lineinfile:
       regexp: '^{{ item.item }}\s'
