@@ -11,7 +11,7 @@
   shell: cd /package/admin/runit-2.1.2/ && package/install creates=/package/admin/runit-2.1.2/command/runit
 
 - name: install stage 2
-  shell: install -m0750 /package/admin/runit/etc/2 /sbin/runsvdir-start creates=/sbin/runsvdir-start
+  command: install -m0750 /package/admin/runit/etc/2 /sbin/runsvdir-start creates=/sbin/runsvdir-start
 
 - name: create /service
   file: state=directory dest=/service

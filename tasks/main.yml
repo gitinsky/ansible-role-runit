@@ -35,7 +35,7 @@
   when: ansible_os_family == "Elbrus"
 
 - name: put runit services files
-  shell: chmod 0755 /etc/sv/{{ runit_service_name }}/{{ item }}
+  command: chmod 0755 /etc/sv/{{ runit_service_name }}/{{ item }}
   with_items:
     - run
   when: ansible_os_family == "Elbrus"
@@ -58,7 +58,7 @@
   when: ansible_os_family == "Elbrus"
 
 - name: put runit services log files
-  shell: chmod 0755 /etc/sv/{{ runit_service_name }}/{{ item }}
+  command: chmod 0755 /etc/sv/{{ runit_service_name }}/{{ item }}
   with_items:
     - log/run
   notify: runit restart {{ runit_service_name }}/log
@@ -91,7 +91,7 @@
   when: ansible_os_family  == "Elbrus"
 
 - name: put runit services log config files
-  shell: chmod 0755 /var/log/{{ runit_service_name }}/{{ item }}
+  command: chmod 0755 /var/log/{{ runit_service_name }}/{{ item }}
   with_items:
     - config
   notify: runit hup {{ runit_service_name }}/log
@@ -113,7 +113,7 @@
   when: ansible_os_family  == "Elbrus"
 
 - name: put runit control/t file
-  shell: chmod 0755 /etc/sv/{{ runit_service_name }}/{{ item }}
+  command: chmod 0755 /etc/sv/{{ runit_service_name }}/{{ item }}
   with_items:
     - control/t
   when: ansible_os_family  == "Elbrus"

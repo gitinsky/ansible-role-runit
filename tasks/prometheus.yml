@@ -29,7 +29,7 @@
       dest: "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_exit_code.prom"
       create: yes
   with_items: "{{ metric_check.results }}"
-  when: item|changed
+  when: item|changed # noqa 503
 
 - name: init prometheus crash metrics
   lineinfile:
@@ -38,7 +38,7 @@
       dest: "{{ node_exporter_data_dir }}/node_service_{{ runit_service_name }}_last_crash.prom"
       create: yes
   with_items: "{{ crash_metric_check.results }}"
-  when: item|changed
+  when: item|changed # noqa 503
 
 
 - name: put runit finish file
