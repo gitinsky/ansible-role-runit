@@ -1,2 +1,15 @@
 ---
+galaxy_info:
+  author: Roman Belyakovskiy
+  description: Sets up runit
+  license:
+    - MIT
+  min_ansible_version: 2.6
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 12.04
+        - 14.04
+        - 16.04
+        - 18.04
 allow_duplicates: yes
