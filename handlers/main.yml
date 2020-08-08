@@ -3,25 +3,25 @@
   command: init q
 
 - name: runit restart {{ runit_service_name }}
-  command: sv restart {{ runit_service_name }}
+  command: "{{ runit_sv }} restart {{ runit_service_name }}"
   become: yes
   become_user: "{{ runit_service_user }}"
 
 - name: runit hup {{ runit_service_name }}
-  command: sv hup {{ runit_service_name }}
+  command: "{{ runit_sv }} hup {{ runit_service_name }}"
   become: yes
   become_user: "{{ runit_service_user }}"
 
 - name: runit reload {{ runit_service_name }}
-  command: sv reload {{ runit_service_name }}
+  command: "{{ runit_sv }} reload {{ runit_service_name }}"
   become: yes
   become_user: "{{ runit_service_user }}"
 
 - name: runit restart {{ runit_service_name }}/log
-  command: sv restart {{ runit_service_name }}/log
+  command: "{{ runit_sv }} restart {{ runit_service_name }}/log"
 
 - name: runit hup {{ runit_service_name }}/log
-  command: sv hup {{ runit_service_name }}/log
+  command: "{{ runit_sv }} hup {{ runit_service_name }}/log"
 
 - name: runit reload {{ runit_service_name }}/log
-  command: sv reload {{ runit_service_name }}/log
+  command: "{{ runit_sv }} reload {{ runit_service_name }}/log"

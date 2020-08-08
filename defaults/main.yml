@@ -1,3 +1,4 @@
+runit_sv: sv
 runit_allow_user_control: yes
 runit_service_user: root
 runit_service_params: ""
