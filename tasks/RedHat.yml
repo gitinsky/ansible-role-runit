@@ -4,6 +4,7 @@
   with_items:
     - sudo
     - glibc-static
+    - gcc
 
 - name: create /package
   file: state=directory dest=/package
