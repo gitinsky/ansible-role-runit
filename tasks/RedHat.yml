@@ -1,4 +1,10 @@
 ---
+- name: install required system packages
+  yum: name={{ item }} state=present
+  with_items:
+    - sudo
+    - glibc-static
+
 - name: create /package
   file: state=directory dest=/package
 
@@ -29,26 +35,16 @@
   file: path=/etc/sv/{{ runit_service_name }}/log state=directory
 
 - name: put runit services files
-  template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root
+  template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
   with_items:
     - run
-
-- name: put runit services files
-  command: chmod 0755 /etc/sv/{{ runit_service_name }}/{{ item }}
-  with_items:
-    - run
+  notify: runit restart {{ runit_service_name }}
 
 - include_tasks: prometheus.yml
   when: runit_prometheus_stats
 
 - name: put runit services log files
-  template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root
-  with_items:
-    - log/run
-  notify: runit restart {{ runit_service_name }}/log
-
-- name: put runit services log files
-  command: chmod 0755 /etc/sv/{{ runit_service_name }}/{{ item }}
+  template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
   with_items:
     - log/run
   notify: runit restart {{ runit_service_name }}/log
@@ -61,13 +57,7 @@
   when: runit_allow_user_control
 
 - name: put runit services log config files
-  template: src=log/{{ item }} dest=/var/log/{{ runit_service_name }}/{{ item }} owner=root group=root
-  with_items:
-    - config
-  notify: runit hup {{ runit_service_name }}/log
-
-- name: put runit services log config files
-  command: chmod 0755 /var/log/{{ runit_service_name }}/{{ item }}
+  template: src=log/{{ item }} dest=/var/log/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
   with_items:
     - config
   notify: runit hup {{ runit_service_name }}/log
@@ -76,11 +66,16 @@
   file: dest=/etc/sv/{{ runit_service_name }}/control state=directory
 
 - name: put runit control/t file
-  template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root
+  template: src={{ item }} dest=/etc/sv/{{ runit_service_name }}/{{ item }} owner=root group=root mode=0755
   with_items:
     - control/t
 
-- name: put runit control/t file
-  command: chmod 0755 /etc/sv/{{ runit_service_name }}/{{ item }}
+- name: allow {{ runit_service_user }} to controll the {{ runit_service_name }} service
+  file: dest=/etc/sv/{{ runit_service_name }}/{{ item.d }} mode={{ item.m }} owner={{ item.o }}
   with_items:
-    - control/t
+      - { d: supervise,         m: 755, o: root }
+      - { d: supervise/ok,      m: 600, o: "{{ runit_service_user }}"}
+      - { d: supervise/control, m: 600, o: "{{ runit_service_user }}"}
+      - { d: supervise/status,  m: 644, o: "{{ runit_service_user }}"}
+  when:
+    - runit_allow_user_control
