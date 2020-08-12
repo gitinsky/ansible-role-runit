@@ -50,6 +50,10 @@
     - log/run
   notify: runit restart {{ runit_service_name }}/log
 
+- name: put runit upstart definition
+  template: src=runit.conf dest=/etc/init/runit.conf owner=root group=root mode=0644
+  when: ansible_distribution == 'Amazon'
+
 - name: enable runit services
   file: src=/etc/sv/{{ runit_service_name }} dest=/service/{{ runit_service_name }} state=link
 
